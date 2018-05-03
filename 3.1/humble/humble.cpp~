@@ -1,0 +1,56 @@
+/*
+ID: krisnad1
+PROG: humble
+LANG: C++
+*/
+
+#include<iostream>
+#include<stdio.h>
+#include<utility>
+#include<queue>
+
+using namespace std;
+
+class compare
+{
+public:
+    bool operator()(pair<int, double> n1,pair<int,double> n2) {
+        return n1.second>n2.second;
+    }
+};
+
+int main(){
+	int K,N,ctr;
+	int p[100];
+	priority_queue<pair<int,double>,vector<pair<int,double> >,compare> pq;
+	pair<int,double> temp;	
+	
+	//freopen("humble.in","r",stdin);
+    //freopen("humble.out","w",stdout);
+	cin>>K>>N;
+	for(int i=0;i<K;i++)
+	{
+		cin>>p[i];
+		pq.push(make_pair(i,p[i]));
+	}
+	for(int i=0;i<N;i++)
+	{
+		//cout<<i<<" ";
+		temp=pq.top();
+		//cout<<temp.second<<endl;
+		pq.pop();
+		if(i==(N-1))
+			printf("%.0lf\n",temp.second);
+		else{
+			for(int j=temp.first;j<K;j++)
+			{
+				if(temp.second*p[j]>temp.second)
+					pq.push(make_pair(j,temp.second*p[j]));
+			}
+		}
+		
+	}
+	//fclose(stdin);
+	//fclose(stdout);
+	return 0;	
+}

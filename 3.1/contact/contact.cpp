@@ -1,0 +1,106 @@
+/*
+ID: krisnad1
+PROG: contact
+LANG: C++
+*/
+
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <map>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int A,B,N,ctr,ctr2,bucket,sz,brs;
+bool nl;
+char s[200000],c;
+map<string,int> table;
+string temp;
+vector<pair<string,int> > li;
+
+bool waytosort(pair<string,int> a, pair<string,int> b) {return (a.second > b.second) || ((a.second==b.second)&&(a.first.length() < b.first.length())) || ((a.second==b.second)&&(a.first.length() == b.first.length())&&(a.first < b.first));}
+
+int main() {
+    freopen("contact.in","r",stdin);
+    freopen("contact.out","w",stdout);
+
+    cin>>A>>B>>N;
+    c=getchar();
+    ctr=0;
+    while(c!=EOF)
+    {
+        if(c=='0' || c=='1')
+        {
+            s[ctr]=c;
+            ctr++;
+        }
+        c=getchar();
+    }
+
+    /*for(int i=0; i<ctr; i++)
+        printf("%c",s[i]);
+    cout<<endl;*/
+    
+    for(int i=0; i<ctr; i++){
+		    temp="";
+		    for(int j=0;j<B;j++){
+		    		if((i+j)<ctr)
+		    			temp+=s[i+j];
+		    		else break;
+		    		if((j+1>=A)&&(j+1<=B)){
+					if(table.find(temp)!=table.end())	
+						table[temp]++;
+					else table.insert(make_pair(temp,1));	    	
+		    		}
+		    }
+    }
+    
+  
+    
+    for(map<string,int>::iterator it=table.begin(); it!=table.end(); ++it){
+		//cout<<it->first<<" "<<it->second<<endl;
+		li.push_back(make_pair(it->first,it->second));    
+    }
+   
+    sort(li.begin(), li.end(), waytosort);
+    
+	/*for(vector<pair<string,int> >::iterator it=li.begin(); it!=li.end(); ++it){
+		cout<<it->first<<" "<<it->second<<endl;
+		//li.insert(make_pair(it->first,it->second));    
+    }*/
+    
+    sz=li.size();
+    
+    if(!li.empty()){
+    		//	cout<<"test"<<endl;
+    		ctr2=0;
+    		for(int i=0;i<N;i++){
+    			if(ctr2+1>sz)break;
+			bucket=li[ctr2].second;
+			cout<<bucket<<endl;
+		   	cout<<li[ctr2].first;
+		   	ctr2++;
+		   	brs = 1;
+		   	nl=0;
+		   	while((ctr2<ctr)&&(li[ctr2-1].second==li[ctr2].second)){
+		   		if (brs%6==0){
+		   			cout<<endl;
+		   			nl=1;
+		   		}
+				if(!nl) {
+					cout<<" "<<li[ctr2++].first;
+				} else {cout<<li[ctr2++].first; nl=0;}
+				brs++;		   		 
+		   	}
+		   	cout<<endl;
+    		}
+    }
+	
+	//cout<<"hello"<<endl;
+    fclose(stdin);
+    fclose(stdout);
+
+    return 0;
+}
